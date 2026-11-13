@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Snake">
+  <div class="page">
+    <div class="container">
+      <p><a href="/arcade">← Arcade</a></p>
+      <h1>Snake</h1>
+      <p class="lead">Arrow keys or WASD to move. Space to pause. On a phone, swipe.</p>
+
+      <div class="scores">
+        <span>Score: <strong id="score">0</strong></span>
+        <span>Best: <strong id="best">0</strong></span>
+      </div>
+
+      <canvas id="game" width="400" height="400" aria-label="Snake game board"></canvas>
+      <p id="status" class="muted" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { initSnake } from '../../scripts/snake';
+
+  initSnake(
+    document.getElementById('game') as HTMLCanvasElement,
+    document.getElementById('score')!,
+    document.getElementById('best')!,
+    document.getElementById('status')!,
+  );
+</script>
+
+<style>
+  .scores { display: flex; gap: 24px; margin-bottom: 12px; }
+  canvas {
+    display: block;
+    width: min(400px, 100%);
+    aspect-ratio: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    touch-action: none;
+  }
+</style>

@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+---
+
+<Base title="Contact">
+  <div class="page">
+    <div class="container">
+      <h1>Contact</h1>
+      <p class="lead">The best way to reach me is email or LinkedIn.</p>
+
+      <p>
+        <a class="btn primary" href={`mailto:${site.email}`}>Email me</a>
+        <a class="btn" href={site.links.linkedin} rel="noopener">LinkedIn</a>
+        <a class="btn" href={site.links.github} rel="noopener">GitHub</a>
+        <a class="btn" href={site.links.youtube} rel="noopener">YouTube</a>
+      </p>
+    </div>
+  </div>
+</Base>

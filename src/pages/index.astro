@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+---
+
+<Base>
+  <section class="hero">
+    <div class="container">
+      <p class="muted hello">Hi, I'm</p>
+      <h1>{site.name}</h1>
+      <p class="lead">{site.tagline}</p>
+
+      <div class="doors">
+        <a class="door card" href="/projects">
+          <h2>My Work</h2>
+          <p class="muted">Projects, background and how to reach me.</p>
+          <span class="go">Explore →</span>
+        </a>
+        <a class="door card" href="/arcade">
+          <h2>Hang Out</h2>
+          <p class="muted">Play a game, browse my photos, see what I'm into.</p>
+          <span class="go">Let's play →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding: 72px 0 80px; }
+  .hello { margin: 0 0 4px; font-size: 1.1rem; }
+  .lead { font-size: 1.2rem; color: var(--muted); max-width: 56ch; margin: 0 0 40px; }
+  .doors { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .door { color: var(--text); transition: border-color 0.15s, transform 0.15s; }
+  .door:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-2px); }
+  .door h2 { margin: 0 0 6px; font-size: 1.4rem; }
+  .door p { margin: 0 0 16px; }
+  .go { color: var(--accent); font-weight: 600; }
+</style>

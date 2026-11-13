@@ -1,0 +1,28 @@
+---
+import { site } from '../config';
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="container row">
+    <span class="muted">© {year} {site.name}. Views are my own.</span>
+    <span class="links">
+      <a href={site.links.github} rel="noopener">GitHub</a>
+      <a href={site.links.linkedin} rel="noopener">LinkedIn</a>
+      <a href={site.links.youtube} rel="noopener">YouTube</a>
+    </span>
+  </div>
+</footer>
+
+<style>
+  footer { border-top: 1px solid var(--border); font-size: 0.9rem; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .links { display: flex; gap: 16px; }
+</style>

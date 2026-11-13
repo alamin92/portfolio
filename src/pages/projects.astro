@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+
+const projects = [
+  {
+    name: 'TripGram',
+    blurb: 'A travel web app where users post about places and look up travel info. Built with a team of three.',
+    tags: ['React', 'Express', 'Sequelize', 'PostgreSQL', 'Google Maps API'],
+    href: site.links.github,
+  },
+  {
+    name: 'Amazon Clone',
+    blurb: 'A shopping-style web app with sign-in, account creation and multiple pages.',
+    tags: ['React', 'PostgreSQL', 'Firebase'],
+    href: 'https://clone-f1489.web.app/',
+  },
+  {
+    name: 'This website',
+    blurb: 'My personal site, built with Astro, including the arcade games.',
+    tags: ['Astro', 'TypeScript', 'Canvas'],
+    href: site.links.github,
+  },
+];
+---
+
+<Base title="Projects">
+  <div class="page">
+    <div class="container">
+      <h1>Projects</h1>
+      <p class="lead">A few things I've built. More write-ups coming soon.</p>
+
+      <div class="grid">
+        {projects.map((p) => (
+          <article class="card">
+            <h3><a href={p.href} rel="noopener">{p.name}</a></h3>
+            <p class="muted">{p.blurb}</p>
+            <ul class="tags">{p.tags.map((t) => <li>{t}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>

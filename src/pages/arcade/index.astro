@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Arcade">
+  <div class="page">
+    <div class="container">
+      <h1>Arcade</h1>
+      <p class="lead">Old-school games, built from scratch. Keyboard or touch.</p>
+
+      <div class="grid">
+        <a class="card game" href="/arcade/snake">
+          <h3>Snake</h3>
+          <p class="muted">The classic. Eat, grow, don't hit yourself.</p>
+          <span class="play">Play →</span>
+        </a>
+        <div class="card game soon">
+          <h3>Sky Fighter</h3>
+          <p class="muted">Fly a plane and shoot things. Coming soon.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .game { color: var(--text); display: block; }
+  a.game:hover { text-decoration: none; border-color: var(--accent); }
+  .game p { margin: 0 0 12px; }
+  .play { color: var(--accent); font-weight: 600; }
+  .soon { opacity: 0.6; }
+</style>
