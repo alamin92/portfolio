@@ -91,6 +91,7 @@ export function initSnake(canvas: HTMLCanvasElement, scoreEl: HTMLElement, bestE
     if (willEat) {
       score += 1;
       scoreEl.textContent = String(score);
+      if (snake.length >= GRID * GRID) { gameOver(); return; } // board full: nowhere to put food
       placeFood();
     } else {
       snake.pop();
@@ -114,11 +115,12 @@ export function initSnake(canvas: HTMLCanvasElement, scoreEl: HTMLElement, bestE
   }
 
   function turn(next: Dir) {
+    // Start first: start() resets the board, which would otherwise wipe the queued turn.
+    if (state === 'ready' || state === 'over') start();
     const base = queued ?? dir;
     if (next.x === -base.x && next.y === -base.y) return; // no reversing
     if (next.x === base.x && next.y === base.y) return;
     queued = next;
-    if (state === 'ready' || state === 'over') start();
   }
 
   const keyMap: Record<string, Dir> = {
@@ -129,8 +131,10 @@ export function initSnake(canvas: HTMLCanvasElement, scoreEl: HTMLElement, bestE
   };
 
   window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return; // leave browser shortcuts alone (Cmd+S, Ctrl+D...)
     if (e.key === ' ' || e.key.startsWith('Arrow')) e.preventDefault(); // stop page scrolling
     if (e.key === ' ') {
+      if (e.repeat) return; // holding Space shouldn't flicker pause/resume
       if (state === 'running') pause(); else start();
       return;
     }
