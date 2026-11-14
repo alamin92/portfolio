@@ -14,10 +14,12 @@ npm run preview  # serve the built site
 ## Where to edit
 
 - `src/config.ts`: name, tagline, email, social links, nav
-- `src/pages/`: one file per page
+- `src/pages/`: one file per page (Travel has Photos, Places and Plan subpages)
+- `src/data/places.ts`: curated places, generated from Google Maps saved lists
+- `src/data/photos.ts`: photo albums manifest
 - `src/scripts/`: game logic
-- `public/`: static files (favicon, later photos)
+- `public/photos/`: web-sized photos (originals stay local in `photos/`, git-ignored)
 
 ## Planned
 
-Gallery, Sky Fighter game, travel map, trophies, resume page, hosting on Cloudflare Pages.
+A second arcade game, trophies, resume page, hosting on Cloudflare Pages.

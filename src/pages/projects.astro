@@ -2,25 +2,79 @@
 import Base from '../layouts/Base.astro';
 import { site } from '../config';
 
-const projects = [
+const gh = (repo: string) => `${site.links.github}/${repo}`;
+
+interface Project {
+  name: string;
+  blurb: string;
+  tags?: string[];
+  status?: string;
+  links: { label: string; href: string }[];
+}
+
+// Finished and working today.
+const featured: Project[] = [
   {
-    name: 'TripGram',
-    blurb: 'A travel web app where users post about places and look up travel info. Built with a team of three.',
-    tags: ['React', 'Express', 'Sequelize', 'PostgreSQL', 'Google Maps API'],
-    href: site.links.github,
-  },
-  {
-    name: 'Amazon Clone',
-    blurb: 'A shopping-style web app with sign-in, account creation and multiple pages.',
-    tags: ['React', 'PostgreSQL', 'Firebase'],
-    href: 'https://clone-f1489.web.app/',
+    name: 'The Arcade',
+    blurb: 'Four browser games built from scratch in TypeScript: Snake, Memory Match (with my travel photos), 2048 and Sky Fighter. Keyboard, mouse or touch.',
+    tags: ['TypeScript', 'Canvas', 'Game loop'],
+    links: [{ label: 'Play', href: '/arcade' }],
   },
   {
     name: 'This website',
-    blurb: 'My personal site, built with Astro, including the arcade games.',
-    tags: ['Astro', 'TypeScript', 'Canvas'],
-    href: site.links.github,
+    blurb: 'A fast static site built with Astro. No backend and nothing to maintain. The code is open on GitHub.',
+    tags: ['Astro', 'TypeScript', 'Static site'],
+    links: [{ label: 'View source', href: gh('portfolio') }],
   },
+  {
+    name: 'Terminal-Bench task fix',
+    blurb: 'Repaired the "log-report" task for Terminal-Bench 2 (Harbor): fixed task formatting, pinned dependencies, removed solution leakage and added more robust verifier criteria.',
+    tags: ['Shell', 'Testing'],
+    links: [{ label: 'View on GitHub', href: gh('terminal-bench-log-report-fix') }],
+  },
+];
+
+// Still being built or polished.
+const inProgress: Project[] = [
+  {
+    name: 'TripGram',
+    blurb: 'A travel web app where users post about places and look up travel info, with Google Maps to estimate travel time. Built with a team of three.',
+    tags: ['React', 'Express', 'Sequelize', 'PostgreSQL', 'Google Maps API'],
+    status: 'In progress',
+    links: [{ label: 'View on GitHub', href: gh('TripGram') }],
+  },
+  {
+    name: 'Amazon Clone',
+    blurb: 'A shopping-style app with sign-in, account creation and multiple pages.',
+    tags: ['React', 'Firebase'],
+    status: 'In progress',
+    links: [
+      { label: 'Live demo', href: 'https://clone-f1489.web.app/' },
+      { label: 'View on GitHub', href: gh('amazon-clone') },
+    ],
+  },
+  {
+    name: 'Movie app',
+    blurb: 'A full-stack guide to what to watch, including upcoming releases: a React front end talking to a Spring Boot REST API backed by MongoDB.',
+    tags: ['React', 'Spring Boot', 'Java', 'MongoDB'],
+    status: 'In progress',
+    links: [
+      { label: 'Front end', href: gh('MovieClient') },
+      { label: 'Back end', href: gh('moviesApp') },
+    ],
+  },
+  {
+    name: 'Coffee shop',
+    blurb: 'A small static page for a coffee shop, from when I was learning HTML and CSS.',
+    tags: ['HTML', 'CSS'],
+    status: 'Early project',
+    links: [{ label: 'View on GitHub', href: gh('Coffee-shop') }],
+  },
+];
+
+const groups = [
+  { title: null, items: featured },
+  { title: 'More projects', items: inProgress },
 ];
 ---
 
@@ -28,17 +82,65 @@ const projects = [
   <div class="page">
     <div class="container">
       <h1>Projects</h1>
-      <p class="lead">A few things I've built. More write-ups coming soon.</p>
+      <p class="lead">Some finished things, and some I'm still building.</p>
 
-      <div class="grid">
-        {projects.map((p) => (
-          <article class="card">
-            <h3><a href={p.href} rel="noopener">{p.name}</a></h3>
-            <p class="muted">{p.blurb}</p>
-            <ul class="tags">{p.tags.map((t) => <li>{t}</li>)}</ul>
-          </article>
-        ))}
-      </div>
+      {groups.map((g) => (
+        <section>
+          {g.title && <h2>{g.title}</h2>}
+          <div class="grid">
+            {g.items.map((p) => (
+              <article class="card">
+                <h3>
+                  {p.name}
+                  {p.status && <span class="badge">{p.status}</span>}
+                </h3>
+                <p class="muted">{p.blurb}</p>
+                {p.tags && <ul class="tags">{p.tags.map((t) => <li>{t}</li>)}</ul>}
+                {p.links.length > 0 && (
+                  <p class="cta">
+                    {p.links.map((l) => <a href={l.href} rel="noopener">{l.label} →</a>)}
+                  </p>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <h2>More on GitHub</h2>
+      <p>
+        You'll find everything else on
+        <a href={site.links.github} rel="noopener">my GitHub profile</a>, including algorithm
+        practice from LeetCode and HackerRank in
+        <a href={gh('Coding-practice')} rel="noopener">Coding-practice</a>.
+      </p>
+
+      <h2>Current projects</h2>
+      <p>
+        Currently, most of what I build professionally is internal US Government work: financial
+        systems, batch jobs, database procedures and deployment pipelines. It is highly confidential,
+        so I'm unable to share it publicly. My background is on the <a href="/about">About page</a>,
+        and you can find the details on
+        <a href={site.links.linkedin} rel="noopener">LinkedIn</a>.
+      </p>
     </div>
   </div>
 </Base>
+
+<style>
+  .badge {
+    margin-left: 8px;
+    padding: 1px 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    vertical-align: middle;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+  }
+  .cta { margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-weight: 600; }
+  section h2:first-child { margin-top: 40px; }
+  section + section h2 { margin-top: 40px; }
+</style>

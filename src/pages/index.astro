@@ -13,15 +13,21 @@ import { site } from '../config';
       <div class="doors">
         <a class="door card" href="/projects">
           <h2>My Work</h2>
-          <p class="muted">Projects, background and how to reach me.</p>
+          <p class="muted">My background, skills, projects and how to reach me.</p>
           <span class="go">Explore →</span>
         </a>
         <a class="door card" href="/arcade">
           <h2>Hang Out</h2>
-          <p class="muted">Play a game, browse my photos, see what I'm into.</p>
+          <p class="muted">Play a game, see where I like to travel, see what I'm into.</p>
           <span class="go">Let's play →</span>
         </a>
       </div>
+
+      <p class="giving">
+        I'm also a board member at
+        <a href={site.links.foundation} rel="noopener">Resilience USA Foundation</a>, a Queens
+        nonprofit I'm proud to be part of. <a href="/community">Read more →</a>
+      </p>
     </div>
   </section>
 </Base>
@@ -36,4 +42,5 @@ import { site } from '../config';
   .door h2 { margin: 0 0 6px; font-size: 1.4rem; }
   .door p { margin: 0 0 16px; }
   .go { color: var(--accent); font-weight: 600; }
+  .giving { margin: 28px 0 0; color: var(--muted); max-width: 60ch; }
 </style>

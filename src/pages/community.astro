@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+
+const help = [
+  { title: 'Monthly food drive', text: 'Free groceries for families in Queens Village. This is where I show up most, month after month.' },
+  { title: 'Board meetings', text: 'I attend the monthly meetings and help plan what the foundation does next.' },
+  { title: 'Events', text: 'I attend community events and help organize them. Organizing is the part I enjoy most.' },
+  { title: 'Learning programs', text: 'Adult and kids learning sessions through Resilience USA Academy. I join when I can and serve as an on-call coordinator.' },
+];
+---
+
+<Base
+  title="Community"
+  description="Alamin Hossain is a board member at Resilience USA Foundation, a 501(c)(3) nonprofit in Queens, New York."
+>
+  <div class="page">
+    <div class="container">
+      <h1>Community</h1>
+      <p class="lead">
+        I'm a board member at Resilience USA Foundation, a nonprofit in Queens, New York. Being part
+        of it is one of the best parts of my life.
+      </p>
+
+      <h2>The foundation</h2>
+      <p>
+        <a href={site.links.foundation} rel="noopener">Resilience USA Foundation</a> is a 501(c)(3)
+        nonprofit in Queens Village. In its own words, its mission is to
+        <em>"strengthen individuals and families through education, advocacy, wellness awareness, and practical community support."</em>
+        In practice that means a monthly community food drive, youth and adult learning through
+        Resilience USA Academy, wellness and mental health resources, family support and community
+        events. Everything is built around dignity and access.
+      </p>
+      <p>
+        <a class="btn primary" href={site.links.foundation} rel="noopener">Visit the foundation</a>
+        <a class="btn" href={site.links.foundationTeam} rel="noopener">Meet the team</a>
+        <a class="btn" href={site.links.foundationVolunteer} rel="noopener">Volunteer</a>
+      </p>
+
+      <h2>What I do there</h2>
+      <div class="grid">
+        {help.map((h) => (
+          <article class="card">
+            <h3>{h.title}</h3>
+            <p class="muted">{h.text}</p>
+          </article>
+        ))}
+      </div>
+
+      <h2>Why I joined</h2>
+      <p>
+        I sit at a computer all day, so volunteering is a refresher for me. I already spend my free
+        time in parks and on trails, and I had some spare hours. Giving them to something bigger than
+        myself felt like the best use of that time. I learn something every time I show up, and
+        helping the community gives me a sense of fulfillment that no sprint ever has.
+      </p>
+      <p>
+        I'd also like to grow into something I care about: seeing people litter in the parks I love, I
+        think there's a way to help people understand why protecting our natural spaces matters. This
+        is my own hope, not an official program. Being inside an organization like this is how I'd
+        start.
+      </p>
+
+      <h2>Want to help?</h2>
+      <p>
+        The foundation always welcomes volunteers, partners and donations. The details are on
+        <a href={site.links.foundationVolunteer} rel="noopener">their volunteer page</a>, or
+        <a href="/contact">get in touch</a> and I'll point you to the right person.
+      </p>
+    </div>
+  </div>
+</Base>

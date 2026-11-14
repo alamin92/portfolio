@@ -1,32 +1,152 @@
 ---
 import Base from '../layouts/Base.astro';
+import { site } from '../config';
+
+// Skills are grouped by what they are, not ranked. Only things I've actually used or studied.
+const skills = [
+  { group: 'Languages', items: ['Java', 'SQL', 'PL/SQL', 'Python', 'JavaScript / React', 'C++'] },
+  {
+    group: 'Backend & APIs',
+    items: ['Spring Boot', 'Spring MVC / Security / Data', 'Hibernate / JPA', 'REST & SOAP', 'Servlets / JSP / JDBC', 'Kafka', 'Swagger', 'Postman'],
+  },
+  {
+    group: 'Data',
+    items: ['Oracle', 'Oracle EBS', 'XML Publisher', 'Informatica mapping', 'MySQL', 'PostgreSQL', 'MongoDB', 'SQL Server', 'Hadoop / Spark (trained)'],
+  },
+  {
+    group: 'Delivery & operations',
+    items: ['Jenkins CI/CD', 'Maven', 'Git / GitHub / GitLab', 'SonarQube', 'ALM / UFT testing', 'ServiceNow', 'Control-M', 'Linux', 'JBoss / Tomcat', 'AWS'],
+  },
+  {
+    group: 'Creative',
+    items: ['Photography', 'Videography', 'Video editing', 'YouTube'],
+  },
+  {
+    group: 'Community & people',
+    items: ['Event organizing', 'Volunteer coordination', 'Program support', 'Tutoring & teaching'],
+  },
+];
+
+const strengths = [
+  { title: 'Organizing', text: 'Give me a messy pile of things, tasks or people and I will find the order in it. It is my favorite thing to do and my strongest skill.' },
+  { title: 'Listening and learning', text: 'I listen first and I never stop learning. I would rather understand something properly than fake it.' },
+  { title: 'Quality over quantity', text: 'I would rather do fewer things well than many things halfway.' },
+  { title: 'Never stop trying', text: 'I have had my share of obstacles on the way here. Every one of them taught me something, and I count myself a winner for getting through them.' },
+];
+
+const rules = [
+  { title: 'Forgive', text: 'Myself and others. Carrying a grudge costs more than it gives.' },
+  { title: 'Let go', text: 'Ego, greed, overthinking, and anything I can no longer control.' },
+  { title: 'Give away', text: 'Whatever is holding me back, including my attachment to material things, so there is room for what makes me a better person.' },
+  { title: 'Silence', text: 'When the noise gets loud, I stay quiet. If I am angry, I breathe first. Words cannot be taken back, so I choose them carefully.' },
+];
 ---
 
-<Base title="About">
+<Base title="About" description="About Alamin Hossain: software engineer, community volunteer, organizer and lifelong learner based in New York.">
   <div class="page">
     <div class="container">
       <h1>About</h1>
       <p class="lead">
-        I'm a software engineer at the United States Postal Service, based in New York.
+        I'm a software engineer in New York. I build and look after the financial systems that large
+        organizations depend on, and outside of work I give time to my community, my camera and the trail.
       </p>
 
+      <h2>Work</h2>
       <p>
-        I work mostly with Java, Spring Boot and Oracle PL/SQL, building and maintaining financial
-        systems, batch jobs and CI/CD pipelines. I studied Computer Science at CUNY York College and
-        enjoy turning messy business problems into reliable software.
+        Since 2021 I've worked in Java, Spring Boot and Oracle PL/SQL. I started at Infosys building
+        Spring Boot services and supporting production batch jobs. Today I'm a computer and
+        programmer analyst at the United States Postal Service, working on financial systems built
+        on Oracle E-Business Suite, plus the Java, database and CI/CD pipelines around them. I studied
+        Computer Science at CUNY York College.
       </p>
       <p>
-        Outside of work I make YouTube videos, play games on my PS5, take photos with my DSLR, go
-        hiking, travel, and watch far too many movies.
+        What I enjoy most is the unglamorous part: taking something messy, finding out why it
+        breaks, and leaving it more reliable than I found it.
       </p>
 
-      <p class="muted">(Placeholder text. We'll rewrite this in your own voice.)</p>
+      <h2>Giving back</h2>
+      <p>
+        I'm a board member at <a href={site.links.foundation} rel="noopener">Resilience USA Foundation</a>,
+        a nonprofit in Queens that runs a monthly food drive, learning programs and community events.
+        I'm proud to be part of it.
+        <a href="/community">Read more about the foundation and my role →</a>
+      </p>
 
       <h2>Skills</h2>
-      <ul class="tags">
-        <li>Java</li><li>Spring Boot</li><li>PL/SQL</li><li>Oracle EBS</li><li>SQL</li>
-        <li>React</li><li>Python</li><li>Jenkins</li><li>Kafka</li><li>Linux</li><li>Git</li>
+      <div class="skills">
+        {skills.map((s) => (
+          <div>
+            <h3>{s.group}</h3>
+            <ul class="tags">{s.items.map((i) => <li>{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+
+      <h2>What I'm like</h2>
+      <div class="grid">
+        {strengths.map((s) => (
+          <article class="card">
+            <h3>{s.title}</h3>
+            <p class="muted">{s.text}</p>
+          </article>
+        ))}
+      </div>
+      <p>
+        My honest weakness is that I want to know everything and I can't move on until a thing is
+        finished. One unfinished task knocks into the next like dominoes. I'm learning to let good be
+        good enough, though not always.
+      </p>
+
+      <h2>Off the clock</h2>
+      <p>
+        I love hiking, traveling and finding a good park. I take photos with my DSLR and make videos
+        for <a href={site.links.youtube} rel="noopener">YouTube</a>. I play games on my PS5 and watch
+        more movies than I should. I read, and I like cleaning and organizing: it clears my mind and
+        resets my body as much as a walk does.
+      </p>
+      <p>
+        If you want to see more of that side, <a href="/arcade">play a game</a> or
+        <a href="/travel">see where I like to go</a>.
+      </p>
+
+      <h2>My simple rules for peace</h2>
+      <p class="muted">Four habits I try to live by. Some days I do better than others.</p>
+      <div class="grid">
+        {rules.map((r) => (
+          <article class="card">
+            <h3>{r.title}</h3>
+            <p class="muted">{r.text}</p>
+          </article>
+        ))}
+      </div>
+      <p>And above all, I trust in God.</p>
+
+      <h2>Early projects</h2>
+      <p>
+        Things I built while learning, before work took over my keyboard. They're a little rough, and
+        that's the point: this is where I started.
+      </p>
+      <ul class="plain">
+        <li>
+          <strong>TripGram</strong>: a travel web app (React, Express, Sequelize, PostgreSQL, Google
+          Maps API) built with a team of three, where users post about places and look up travel info.
+        </li>
+        <li>
+          <strong>Amazon Clone</strong>: a shopping-style React app with sign-in and account creation.
+          <a href="https://clone-f1489.web.app/" rel="noopener">Try it</a>.
+        </li>
+        <li>
+          <strong>Movie guide</strong>: a small app to keep track of what to watch, including upcoming
+          releases.
+        </li>
       </ul>
     </div>
   </div>
 </Base>
+
+<style>
+  .skills { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .skills h3 { font-size: 0.95rem; color: var(--muted); font-weight: 600; margin: 0; }
+  .plain { padding-left: 20px; }
+  .plain li { margin-bottom: 10px; }
+</style>
