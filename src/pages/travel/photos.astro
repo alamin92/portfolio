@@ -1,0 +1,123 @@
+---
+import Base from '../../layouts/Base.astro';
+import { albums } from '../../data/photos';
+---
+
+<Base title="Travel photos" description="Photos from Alamin Hossain's hikes and road trips: national parks, deserts, coast and fall color.">
+  <div class="page">
+    <div class="container">
+      <p class="crumb"><a href="/travel">← Travel</a></p>
+      <h1>Photos</h1>
+      <p class="lead">Taken on hikes and road trips. Tap any photo to see it bigger.</p>
+
+      <nav class="chips" aria-label="Albums">
+        {albums.map((a) => <a href={`#${a.slug}`}>{a.title}</a>)}
+      </nav>
+
+      {albums.map((a) => (
+        <section id={a.slug}>
+          <h2>{a.title}</h2>
+          <div class="wall">
+            {a.photos.map((p, i) => (
+              <button type="button" class="shot" data-album={a.slug} data-index={i} aria-label={`Open photo ${i + 1} of ${a.photos.length} in ${a.title}`}>
+                <img src={p.thumb} width={p.tw} height={p.th} alt={`${a.title}, photo ${i + 1}`} loading="lazy" decoding="async" />
+              </button>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <dialog id="lightbox" aria-label="Photo viewer">
+    <button type="button" class="lb-close" aria-label="Close">×</button>
+    <button type="button" class="lb-prev" aria-label="Previous photo">‹</button>
+    <img id="lb-img" alt="" />
+    <button type="button" class="lb-next" aria-label="Next photo">›</button>
+    <p id="lb-cap"></p>
+  </dialog>
+
+  <script id="album-data" type="application/json" set:html={JSON.stringify(albums.map((a) => ({ slug: a.slug, title: a.title, photos: a.photos.map((p) => ({ src: p.src, w: p.w, h: p.h })) })))} />
+</Base>
+
+<script>
+  type A = { slug: string; title: string; photos: { src: string; w: number; h: number }[] };
+  const data: A[] = JSON.parse(document.getElementById('album-data')!.textContent || '[]');
+  const dlg = document.getElementById('lightbox') as HTMLDialogElement;
+  const img = document.getElementById('lb-img') as HTMLImageElement;
+  const cap = document.getElementById('lb-cap')!;
+  let album: A | undefined;
+  let idx = 0;
+
+  function show() {
+    if (!album) return;
+    const p = album.photos[idx];
+    img.src = p.src;
+    img.alt = `${album.title}, photo ${idx + 1}`;
+    cap.textContent = `${album.title} · ${idx + 1} / ${album.photos.length}`;
+    // Preload the neighbours so next/prev feels instant.
+    for (const j of [idx - 1, idx + 1]) {
+      const n = album.photos[j];
+      if (n) new Image().src = n.src;
+    }
+  }
+  function step(d: number) {
+    if (!album) return;
+    idx = (idx + d + album.photos.length) % album.photos.length;
+    show();
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.shot').forEach((b) =>
+    b.addEventListener('click', () => {
+      album = data.find((a) => a.slug === b.dataset.album);
+      idx = Number(b.dataset.index);
+      show();
+      dlg.showModal();
+    })
+  );
+  dlg.querySelector('.lb-close')!.addEventListener('click', () => dlg.close());
+  dlg.querySelector('.lb-prev')!.addEventListener('click', () => step(-1));
+  dlg.querySelector('.lb-next')!.addEventListener('click', () => step(1));
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+  // Swipe on touch screens.
+  let x0 = 0;
+  dlg.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  dlg.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+  });
+  dlg.addEventListener('close', () => { img.removeAttribute('src'); });
+</script>
+
+<style>
+  .crumb { margin: 0 0 12px; font-size: 0.95rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0; }
+  .chips a {
+    font-size: 0.85rem; padding: 4px 12px; border: 1px solid var(--border);
+    border-radius: 999px; color: var(--muted); background: var(--surface);
+  }
+  .chips a:hover { text-decoration: none; border-color: var(--accent); color: var(--text); }
+  section { scroll-margin-top: 16px; }
+  .wall { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .shot { padding: 0; border: 0; background: var(--border); border-radius: 8px; overflow: hidden; cursor: zoom-in; aspect-ratio: 4 / 3; }
+  .shot img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.2s; }
+  .shot:hover img { transform: scale(1.04); }
+
+  dialog { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; color: #fff; }
+  dialog::backdrop { background: rgba(0, 0, 0, 0.92); }
+  dialog[open] { display: flex; align-items: center; justify-content: center; }
+  #lb-img { max-width: min(94vw, 1400px); max-height: 84vh; object-fit: contain; border-radius: 4px; }
+  #lb-cap { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; margin: 0; font-size: 0.9rem; opacity: 0.8; }
+  .lb-close, .lb-prev, .lb-next {
+    position: absolute; background: rgba(255,255,255,0.12); color: #fff; border: 0; cursor: pointer;
+    width: 44px; height: 44px; border-radius: 50%; font-size: 1.8rem; line-height: 1;
+  }
+  .lb-close:hover, .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.25); }
+  .lb-close { top: 14px; right: 14px; }
+  .lb-prev { left: 14px; top: 50%; transform: translateY(-50%); }
+  .lb-next { right: 14px; top: 50%; transform: translateY(-50%); }
+</style>

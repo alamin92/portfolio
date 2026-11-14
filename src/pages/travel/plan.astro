@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// Tools I actually use to plan trips. Edit this list to add or remove.
+const planning = [
+  {
+    group: 'Parks & trails',
+    links: [
+      { name: 'National Park Service', href: 'https://www.nps.gov', note: 'Parks, passes, alerts and trip planning.' },
+      { name: 'AllTrails', href: 'https://www.alltrails.com', note: 'Find and compare hikes, with reviews and maps.' },
+      { name: 'I LOVE NY', href: 'https://www.iloveny.com', note: 'New York State trips, parks and events.' },
+    ],
+  },
+  {
+    group: 'Flights, stays & booking',
+    links: [
+      { name: 'Kayak', href: 'https://www.kayak.com', note: 'Compare flights, hotels and cars.' },
+      { name: 'Expedia', href: 'https://www.expedia.com', note: 'Flights, hotels and bundles.' },
+      { name: 'Priceline', href: 'https://www.priceline.com', note: 'Deals on hotels and flights.' },
+      { name: 'Airbnb', href: 'https://www.airbnb.com', note: 'Homes and unique stays.' },
+    ],
+  },
+];
+---
+
+<Base title="Plan a trip" description="The tools Alamin Hossain uses to plan hikes and trips.">
+  <div class="page">
+    <div class="container">
+      <p class="crumb"><a href="/travel">← Travel</a></p>
+      <h1>Plan a trip</h1>
+      <p class="lead">The tools I use to plan hikes and trips, in case they're useful to you too.</p>
+
+      {planning.map((p) => (
+        <section>
+          <h2>{p.group}</h2>
+          <div class="grid">
+            {p.links.map((l) => (
+              <a class="card tool" href={l.href} rel="noopener">
+                <h3>{l.name}</h3>
+                <p class="muted">{l.note}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .crumb { margin: 0 0 12px; font-size: 0.95rem; }
+  .tool { display: block; color: var(--text); transition: border-color 0.15s; }
+  .tool:hover { text-decoration: none; border-color: var(--accent); }
+  .tool p { margin: 0; }
+</style>

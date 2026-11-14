@@ -5,3 +5,7 @@ dist/
 .env.*
 .DS_Store
 *.log
+
+# Local source material (originals, raw Google Maps export). Web-sized copies live in public/photos.
+/photos/
+/PlacesToGO/

@@ -1,0 +1,99 @@
+---
+import Base from '../../layouts/Base.astro';
+import { placeCategories } from '../../data/places';
+
+const total = placeCategories.reduce((n, c) => n + c.items.length, 0);
+---
+
+<Base title="Places" description="National parks, state parks, hikes, waterfalls and hidden gems Alamin Hossain loves or wants to visit.">
+  <div class="page">
+    <div class="container">
+      <p class="crumb"><a href="/travel">← Travel</a></p>
+      <h1>Places</h1>
+      <p class="lead">
+        My favorite places and the ones still on my list: {total} spots across the U.S. and a few
+        beyond. Each link opens the place in Google Maps.
+      </p>
+
+      <label class="search">
+        <span class="sr">Search places</span>
+        <input id="q" type="search" placeholder="Search: Zion, waterfall, Iceland, NY…" autocomplete="off" />
+      </label>
+      <p id="count" class="muted" aria-live="polite"></p>
+
+      {placeCategories.map((c) => (
+        <details class="cat" data-cat open={false}>
+          <summary>
+            <h2>{c.label}</h2>
+            <span class="muted n">{c.items.length}</span>
+          </summary>
+          <p class="muted blurb">{c.blurb}</p>
+          <ul class="places">
+            {c.items.map((p) => (
+              <li data-text={`${p.name} ${p.region} ${c.label}`.toLowerCase()}>
+                <a href={p.url} rel="noopener" target="_blank">{p.name}</a>
+                {p.region && <span class="muted region">{p.region}</span>}
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))}
+      <p id="none" class="muted" hidden>No matches. Try a different word.</p>
+    </div>
+  </div>
+</Base>
+
+<script>
+  const q = document.getElementById('q') as HTMLInputElement;
+  const count = document.getElementById('count')!;
+  const none = document.getElementById('none')!;
+  const cats = Array.from(document.querySelectorAll<HTMLDetailsElement>('[data-cat]'));
+  const wasOpen = new Map<HTMLDetailsElement, boolean>();
+
+  function run() {
+    const term = q.value.trim().toLowerCase();
+    let shown = 0;
+    for (const c of cats) {
+      if (!wasOpen.has(c)) wasOpen.set(c, c.open);
+      let n = 0;
+      c.querySelectorAll<HTMLLIElement>('li').forEach((li) => {
+        const hit = !term || (li.dataset.text || '').includes(term);
+        li.hidden = !hit;
+        if (hit) n++;
+      });
+      c.hidden = n === 0;
+      // While searching, expand every category that has a match; restore afterwards.
+      c.open = term ? n > 0 : (wasOpen.get(c) ?? false);
+      shown += n;
+    }
+    count.textContent = term ? `${shown} match${shown === 1 ? '' : 'es'}` : '';
+    none.hidden = !(term && shown === 0);
+  }
+  q.addEventListener('input', run);
+  // Remember what the visitor opened by hand, so clearing the search puts things back.
+  cats.forEach((c) => c.addEventListener('toggle', () => { if (!q.value.trim()) wasOpen.set(c, c.open); }));
+</script>
+
+<style>
+  .crumb { margin: 0 0 12px; font-size: 0.95rem; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .search { display: block; margin: 24px 0 8px; }
+  .search input {
+    width: 100%; max-width: 480px; padding: 10px 16px; font-size: 1rem; color: var(--text);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+  }
+  .search input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  #count { min-height: 1.6em; margin: 0 0 12px; }
+  .cat { border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius); padding: 4px 20px; margin: 0 0 12px; }
+  .cat[hidden] { display: none; }
+  summary { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; cursor: pointer; padding: 12px 0; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▸'; color: var(--muted); margin-right: 10px; transition: transform 0.15s; }
+  details[open] > summary::before { transform: rotate(90deg); }
+  summary h2 { margin: 0; font-size: 1.2rem; flex: 1; }
+  .blurb { margin: 0 0 12px; }
+  .places { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 4px 24px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .places li { padding: 4px 0; line-height: 1.35; }
+  .places li[hidden] { display: none; }
+  .region { font-size: 0.8rem; margin-left: 6px; }
+</style>
