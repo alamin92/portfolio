@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const cells = Array.from({ length: 16 }, (_, i) => i);
+---
+
+<Base title="2048" description="The 2048 sliding tile puzzle, built from scratch.">
+  <div class="page">
+    <div class="container">
+      <p><a href="/arcade">← Arcade</a></p>
+      <h1>2048</h1>
+      <p class="lead">Arrow keys or WASD to slide the tiles. Equal tiles merge. Reach 2048. On a phone, swipe.</p>
+
+      <div class="scores">
+        <span>Score: <strong id="score">0</strong></span>
+        <span>Best: <strong id="best">0</strong></span>
+        <button id="new" type="button" class="btn">New game</button>
+      </div>
+
+      <div id="board" class="board" role="group" aria-label="2048 board">
+        {cells.map(() => <div class="cell" data-v="0"></div>)}
+      </div>
+      <p id="status" class="muted" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { init2048 } from '../../scripts/game2048';
+
+  const board = document.getElementById('board')!;
+  init2048(
+    Array.from(board.querySelectorAll<HTMLElement>('.cell')),
+    board,
+    document.getElementById('score')!,
+    document.getElementById('best')!,
+    document.getElementById('status')!,
+    document.getElementById('new')!,
+  );
+</script>
+
+<style>
+  .scores { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 14px; }
+  .scores .btn { padding: 6px 14px; margin-left: auto; }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: min(420px, 100%);
+    aspect-ratio: 1;
+    padding: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    touch-action: none;
+    user-select: none;
+  }
+  .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--border);
+    color: #fff;
+    font-weight: 700;
+    font-size: 2rem;
+  }
+  .cell.pop { animation: pop 0.15s ease-out; }
+  @keyframes pop { from { transform: scale(0.6); } to { transform: scale(1); } }
+</style>

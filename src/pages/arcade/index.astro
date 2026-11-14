@@ -1,23 +1,29 @@
 ---
 import Base from '../../layouts/Base.astro';
+
+const games = [
+  { name: 'Snake', href: '/arcade/snake', blurb: 'The classic. Eat, grow, don\'t hit yourself.', how: 'Arrow keys, WASD or swipe' },
+  { name: 'Memory Match', href: '/arcade/memory', blurb: 'Find the matching pairs. The cards are photos from my trips.', how: 'Click or tap' },
+  { name: '2048', href: '/arcade/2048', blurb: 'Slide and merge tiles. How high can you get?', how: 'Arrow keys, WASD or swipe' },
+  { name: 'Sky Fighter', href: '/arcade/skyfighter', blurb: 'Fly a plane, shoot everything that falls, and survive as long as you can.', how: 'Arrow keys, WASD or drag' },
+];
 ---
 
-<Base title="Arcade">
+<Base title="Arcade" description="Four browser games built from scratch: Snake, Memory Match, 2048 and Sky Fighter.">
   <div class="page">
     <div class="container">
       <h1>Arcade</h1>
-      <p class="lead">Old-school games, built from scratch. Keyboard or touch.</p>
+      <p class="lead">Old-school games, built from scratch. Keyboard, mouse or touch.</p>
 
       <div class="grid">
-        <a class="card game" href="/arcade/snake">
-          <h3>Snake</h3>
-          <p class="muted">The classic. Eat, grow, don't hit yourself.</p>
-          <span class="play">Play →</span>
-        </a>
-        <div class="card game soon">
-          <h3>Sky Fighter</h3>
-          <p class="muted">Fly a plane and shoot things. Coming soon.</p>
-        </div>
+        {games.map((g) => (
+          <a class="card game" href={g.href}>
+            <h3>{g.name}</h3>
+            <p class="muted">{g.blurb}</p>
+            <p class="how muted">{g.how}</p>
+            <span class="play">Play →</span>
+          </a>
+        ))}
       </div>
     </div>
   </div>
@@ -26,7 +32,7 @@ import Base from '../../layouts/Base.astro';
 <style>
   .game { color: var(--text); display: block; }
   a.game:hover { text-decoration: none; border-color: var(--accent); }
-  .game p { margin: 0 0 12px; }
+  .game p { margin: 0 0 8px; }
+  .how { font-size: 0.85rem; margin-bottom: 14px !important; }
   .play { color: var(--accent); font-weight: 600; }
-  .soon { opacity: 0.6; }
 </style>

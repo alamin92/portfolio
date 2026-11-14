@@ -1,0 +1,52 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Sky Fighter" description="A vertical plane shooter built from scratch with TypeScript and Canvas.">
+  <div class="page">
+    <div class="container">
+      <p><a href="/arcade">← Arcade</a></p>
+      <h1>Sky Fighter</h1>
+      <p class="lead">
+        Your plane fires on its own. Arrow keys or WASD to fly, Space or P to pause. On a phone, drag
+        to fly and tap to pause.
+      </p>
+
+      <div class="scores">
+        <span>Score: <strong id="score">0</strong></span>
+        <span>Best: <strong id="best">0</strong></span>
+        <span>Lives: <strong id="lives" class="lives" aria-label="lives left">♥♥♥</strong></span>
+      </div>
+
+      <canvas id="game" width="400" height="600" aria-label="Sky Fighter game board"></canvas>
+      <p id="status" class="muted" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { initSkyFighter } from '../../scripts/skyfighter';
+
+  initSkyFighter(
+    document.getElementById('game') as HTMLCanvasElement,
+    document.getElementById('score')!,
+    document.getElementById('best')!,
+    document.getElementById('lives')!,
+    document.getElementById('status')!,
+  );
+</script>
+
+<style>
+  .scores { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 12px; }
+  .lives { color: #ef4444; letter-spacing: 2px; }
+  canvas {
+    display: block;
+    width: min(400px, 100%);
+    aspect-ratio: 2 / 3;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    touch-action: none;
+    cursor: pointer;
+  }
+</style>
